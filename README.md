@@ -6,8 +6,7 @@ djangorestframework3.8.2
 django-cors-headers==2.2.0
 ```
 
-por que en AWS las instancias o son 3.4 o 3.6
-
+Por que en AWS las instancias o son 3.4 o 3.6
 por lo cual no usan tu version de python
 y preferi usar una superior para evitar errores de dependencias y desarrollo
 
@@ -16,9 +15,9 @@ django-admin startproject library_project
 cd library_project
 python manage.py  migrate
 ```
-las apps son areas discretas de funcionalidad, aqui hay intercomunicacion entre ellas, en Elixir hay que generar una umbrella :'v
+Las apps son areas discretas de funcionalidad, aqui hay intercomunicacion entre ellas, en Elixir hay que generar una umbrella :'v
 
-agregrar la nueva app a installed_apps en `settings.py`, nunca olvidar dejar una coma al final para seguir agregando elementos al recurso en automatico
+Agregar la nueva app a `installed_apps` en `settings.py`, nunca olvidar dejar una coma al final para seguir agregando elementos al recurso en automatico
 migrar
 
 ```bash
@@ -27,6 +26,7 @@ python manage.py  migrate
 python manage.py runserver
 
 ```
+![iniciando server](https://raw.githubusercontent.com/okadath/DjangoREST/master/django.png)
 <!-- 
 ## Cap 2 Django tradicional
 agregar a books.models
@@ -121,7 +121,10 @@ hay 3 archivos
 
 
 + URLS:
- en todo_project/urls.py agregar en el array(nunca pinches putas perras olvidar que se debe agregar el include en versiones superiores al 2.0 para el manejo de urls,cuando hay errores a veces no hay autorefresh en django, hay que cerrar el server con Ctrl+C en consola, el cambio de sintaxis entre versiones me causo dolores de cabeza por dias la primera vez que toque django!!!!!!! >:v ):
+ En todo_project/urls.py agregar en el array(nunca pinches putas perras olvidar que se debe agregar el include en versiones superiores al 2.0 para el manejo de urls,cuando hay errores a veces no hay autorefresh en django, hay que cerrar el server con Ctrl+C en consola, el cambio de sintaxis entre versiones me causo dolores de cabeza por dias la primera vez que toque django!!!!!!! >:v ):
+![error en URL](https://raw.githubusercontent.com/okadath/DjangoREST/master/error.png)
+
+ ya corregido:
 ```python
 from django.contrib import admin
 from django.urls import path, include
@@ -134,7 +137,8 @@ urlpatterns = [
 
 ```
 
-crear en todos/urls.py
+
+Crear en `todos/urls.py`:
 ```python
 from django.urls import path
 
@@ -145,11 +149,11 @@ path('',ListTodo.as_view()),
 path('<int:pk>/',DetailTodo.as_view()),
 ]
 ```
-el list nos dara todos
+El list nos dara todos
 int pk es para dar solo un item
 
 + todos/serializers.py:
-convierten los datos crudos en un JSON
+Convierten los datos crudos en un JSON
 crear todos/serializers.py
 
 ```python
@@ -161,7 +165,7 @@ class TodoSerializer(serializers.ModelSerializer):
 		model=Todo
 		fields=('id','title','body',)
 ```
-es similar a los modelos de clases de django, id es generado automaticamente
+Es similar a los modelos de clases de django, id es generado automaticamente
 
 + todos/views.py:
 
@@ -182,6 +186,14 @@ class DetailTodo(generics.RetriveAPIView):
 	queryset=Todo.objects.all()
 	serializer_class=TodoSerializer
 ```
+
+Accediendo a la URL
++ Para ver todos los items:
+![lista](https://raw.githubusercontent.com/okadath/DjangoREST/master/APIlist.png)
++ Para verlos en formato JSON:
+![json](https://raw.githubusercontent.com/okadath/DjangoREST/master/APIJSON.png)
++ Para ver un solo item:
+![item](https://raw.githubusercontent.com/okadath/DjangoREST/master/APIitem.png)
 ## Cap 4 REACT
 
 yo uso yarn, npm igual sirve
@@ -191,6 +203,8 @@ create-react-app frontend
 cd frontend
 npm start
 ```
+![react](https://raw.githubusercontent.com/okadath/DjangoREST/master/createreact.png)
+
 y editamos el src/App.js:
 ```javascript
 import React, { Component } from 'react';
@@ -225,6 +239,8 @@ class App extends Component{
 }
 export default App;
 ```
+![react estatico](https://raw.githubusercontent.com/okadath/DjangoREST/master/static.png)
+
 ya con el estatico siguiendo el workflow de React creamos los datos dinamicos
 instalamos axios para manejar la conexion:
 ```npm install axios```
@@ -267,7 +283,7 @@ class App extends Component{
 export default App;
 
 ```
-
+![react dinamico](https://raw.githubusercontent.com/okadath/DjangoREST/master/dinamic.png)
 
 y corriendo el server de django como el server de react obtenemos:
 ```bash
@@ -275,5 +291,6 @@ npm start
 python manage.py runserver
 ```
 
+voy a seguir con el libro por que aqui solo es usando GET, falta la autenticacion y POST
 
 
