@@ -294,3 +294,151 @@ python manage.py runserver
 voy a seguir con el libro por que aqui solo es usando GET, falta la autenticacion y POST
 
 
+Ciclo de creacion:
+
+```python
+models  ->
+		views->urls
+serializer->
+```
+models:
+```py
+from django.db import models
+from django.contrib.auth.models import User
+
+
+class Post(models.Model):
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    title = models.CharField(max_length=50)
+    body = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.title
+```
+serializer:
+```py
+from rest_framework import serializers
+from .models import Post
+
+
+class PostSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        fields = ('id', 'author', 'title', 'body', 'created_at',)
+        model = Post
+```
+views(cambiarle el nombre a APIviews para evitar errores):
+
+```py
+from rest_framework import generics
+
+from .models import Post
+from .permissions import IsAuthorOrReadOnly
+from .serializers import PostSerializer
+
+
+class PostList(generics.ListCreateAPIView):
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
+
+
+class PostDetail(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = (IsAuthorOrReadOnly,)
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
+```
+
+urls: 
+```py
+from django.urls import path
+
+from .views import PostList, PostDetail
+
+urlpatterns = [
+    path('<int:pk>/', PostDetail.as_view()),
+    path('', PostList.as_view()),
+]
+```
+en el urls principal:
+```py
+from django.contrib import admin
+from django.urls import include, path
+
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('api/v1/', include('posts.urls')),
+    path('api-auth/', include('rest_framework.urls')),
+]
+```
+
+## Authorization:
+agregar al `urls.py` principal:
+```python
+path('api-auth/', include('rest_framework.urls')),
+```
+y eso usara el login por default de DRF
+
+en el `settings.py` agregamos los permisos:
+
+```python
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ]
+}
+```
+
+y en las vistas ponemos
+
+```python
+from rest_framework import permissions
+
+class PostDetail(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = (permissions.IsAuthenticated,)
+    ...
+```
+para limitar los permisos:
+
++ AllowAny
++ IsAuthenticated
++ IsAdminUser
++ IsAuthenticatedOrReadOnly
+
+Si se ponen en el `settings.py`  entonces se aplican a todas las vistas
+
+### Custom permissions
+
+creamos un archivo `posts/permissions.py`:
+```python
+from rest_framework import permissions
+
+
+class IsAuthorOrReadOnly(permissions.BasePermission):
+
+    def has_object_permission(self, request, view, obj):
+        # Read-only permissions are allowed for any request
+        if request.method in permissions.SAFE_METHODS:
+            return True
+
+        # Write permissions are only allowed to the author of a post
+        return obj.author == request.user
+```
+
+y lo heredamos en el `views.py`:
+```python
+from .permissions import IsAuthorOrReadOnly
+from .serializers import PostSerializer
+
+
+class PostList(generics.ListCreateAPIView):
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
+
+
+class PostDetail(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = (IsAuthorOrReadOnly,)
+   ```
+
