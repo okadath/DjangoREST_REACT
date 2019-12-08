@@ -1,13 +1,8 @@
 from django.urls import path
 
-from .views import ListTodo, DetailTodo
+from .views import PostList, PostDetail
 
-urlpatterns=[
-path('',ListTodo.as_view()),
-path('<int:pk>/',DetailTodo.as_view()),
-
+urlpatterns = [
+    path('<int:pk>/', PostDetail.as_view()),
+    path('', PostList.as_view()),
 ]
-
-
-
-

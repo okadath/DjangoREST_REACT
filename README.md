@@ -2,7 +2,7 @@ esto lo hice con al version de django que manejas
 
 ```
 django==2.1
-djangorestframework3.8.2
+djangorestframework==3.8.2
 django-cors-headers==2.2.0
 ```
 
@@ -26,7 +26,7 @@ python manage.py  migrate
 python manage.py runserver
 
 ```
-![iniciando server](https://raw.githubusercontent.com/okadath/DjangoREST/master/django.png)
+![iniciando server](https://raw.githubusercontent.com/okadath/DjangoREST/master/pics/django.png)
 <!-- 
 ## Cap 2 Django tradicional
 agregar a books.models
@@ -102,9 +102,12 @@ MIDDLEWARE = [
   'corsheaders.middleware.CorsMiddleware',
 ]
 
-CORS_ORIGIN_WHITELIST=(
-  'localhost:3000/'
-  )
+CORS_ORIGIN_WHITELIST = [
+    'http://localhost:3000',
+    'http://localhost:8000',
+    'http://localhost:8080',
+]
+
 ```
 python manage.py  makemigrations todos(en plural)
 python manage.py  migrate
@@ -122,7 +125,7 @@ hay 3 archivos
 
 + URLS:
  En todo_project/urls.py agregar en el array(nunca pinches putas perras olvidar que se debe agregar el include en versiones superiores al 2.0 para el manejo de urls,cuando hay errores a veces no hay autorefresh en django, hay que cerrar el server con Ctrl+C en consola, el cambio de sintaxis entre versiones me causo dolores de cabeza por dias la primera vez que toque django!!!!!!! >:v ):
-![error en URL](https://raw.githubusercontent.com/okadath/DjangoREST/master/error.png)
+![error en URL](https://raw.githubusercontent.com/okadath/DjangoREST/master/pics/error.png)
 
  ya corregido:
 ```python
@@ -189,11 +192,11 @@ class DetailTodo(generics.RetriveAPIView):
 
 Accediendo a la URL
 + Para ver todos los items:
-![lista](https://raw.githubusercontent.com/okadath/DjangoREST/master/APIlist.png)
+![lista](https://raw.githubusercontent.com/okadath/DjangoREST/master/pics/APIlist.png)
 + Para verlos en formato JSON:
-![json](https://raw.githubusercontent.com/okadath/DjangoREST/master/APIJSON.png)
+![json](https://raw.githubusercontent.com/okadath/DjangoREST/master/pics/APIJSON.png)
 + Para ver un solo item:
-![item](https://raw.githubusercontent.com/okadath/DjangoREST/master/APIitem.png)
+![item](https://raw.githubusercontent.com/okadath/DjangoREST/master/pics/APIitem.png)
 ## Cap 4 REACT
 
 yo uso yarn, npm igual sirve
@@ -203,7 +206,7 @@ create-react-app frontend
 cd frontend
 npm start
 ```
-![react](https://raw.githubusercontent.com/okadath/DjangoREST/master/createreact.png)
+![react](https://raw.githubusercontent.com/okadath/DjangoREST/master/pics/createreact.png)
 
 y editamos el src/App.js:
 ```javascript
@@ -239,7 +242,7 @@ class App extends Component{
 }
 export default App;
 ```
-![react estatico](https://raw.githubusercontent.com/okadath/DjangoREST/master/static.png)
+![react estatico](https://raw.githubusercontent.com/okadath/DjangoREST/master/pics/static.png)
 
 ya con el estatico siguiendo el workflow de React creamos los datos dinamicos
 instalamos axios para manejar la conexion:
@@ -283,7 +286,7 @@ class App extends Component{
 export default App;
 
 ```
-![react dinamico](https://raw.githubusercontent.com/okadath/DjangoREST/master/dinamic.png)
+![react dinamico](https://raw.githubusercontent.com/okadath/DjangoREST/master/pics/dinamic.png)
 
 y corriendo el server de django como el server de react obtenemos:
 ```bash
@@ -293,6 +296,7 @@ python manage.py runserver
 
 voy a seguir con el libro por que aqui solo es usando GET, falta la autenticacion y POST
 
+# Caps 5-6
 
 Ciclo de creacion:
 
@@ -441,4 +445,15 @@ class PostList(generics.ListCreateAPIView):
 class PostDetail(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = (IsAuthorOrReadOnly,)
    ```
+
+### Authentication:
+
+el pinche libro usa el manejo de tokens por default de DRF, nosotros usaremos JWT
+
+### Routes/endpoints
+ para evitar la repeticion de codigo 
+
+# JWT
+
+
 

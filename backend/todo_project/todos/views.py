@@ -1,14 +1,17 @@
-#from django.shortcuts import render
-
 from rest_framework import generics
-from .models import Todo
-from .serializers import TodoSerializer
 
-class ListTodo(generics.ListAPIView):
-	queryset=Todo.objects.all()
-	serializer_class=TodoSerializer
+from .models import Post
+#from .permissions import IsAuthorOrReadOnly
+from .serializers import PostSerializer
+from rest_framework import permissions
 
-class DetailTodo(generics.RetrieveAPIView):
-	queryset=Todo.objects.all()
-	serializer_class=TodoSerializer
 
+class PostList(generics.ListCreateAPIView):
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
+
+
+class PostDetail(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = (permissions.IsAuthenticated,)
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
