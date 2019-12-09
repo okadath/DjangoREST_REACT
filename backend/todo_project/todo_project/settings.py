@@ -10,7 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
-import os
+import os,datetime
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -40,13 +40,30 @@ INSTALLED_APPS = [
     'todos',
     'rest_framework',
     'corsheaders',
+    'rest_framework.authtoken', 
+    'rest_auth',
+    'rest_framework_swagger',
+    'coreapi',
 ]
 
-REST_FRAMEWORK={
-    'DEFAULT_PERMISSION_CLASSES':[
-    'rest_framework.permissions.AllowAny',
-    ]
+SWAGGER_SETTINGS = {
+    'USE_SESSION_AUTH': False,
+    'LOGIN_URL': 'rest_framework:login',
+    'LOGOUT_URL': 'rest_framework:logout',
 }
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+    ),
+    'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
+}
+REST_USE_JWT = True
 
 MIDDLEWARE = [
 
@@ -65,6 +82,8 @@ CORS_ORIGIN_WHITELIST = [
     'http://localhost:8000',
     'http://localhost:8080',
 ]
+
+CORS_ALLOW_CREDENTIALS = True
 
 ROOT_URLCONF = 'todo_project.urls'
 
@@ -135,3 +154,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
+PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
+STATIC_ROOT = os.path.join(PROJECT_DIR, 'static')
+
+JWT_AUTH = {
+    'JWT_RESPONSE_PAYLOAD_HANDLER' :   'todos.utils.custom_jwt_response_handler',
+    'JWT_EXPIRATION_DELTA': datetime.timedelta(minutes=60*24*365),
+    'JWT_AUTH_HEADER_PREFIX': 'Bearer',
+}
