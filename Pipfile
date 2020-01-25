@@ -14,6 +14,7 @@ django-rest-auth = "*"
 coreapi = "*"
 pyyaml = "*"
 django-rest-swagger = "*"
+pipfile = "*"
 
 [requires]
-python_version = "3.6"
+python_version = "3.5"
