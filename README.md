@@ -2,9 +2,9 @@ esto lo hice con al version de django que manejas
 
 ```
 django==2.1
-djangorestframework==3.8.2
+DjangoREST_REACTframework==3.8.2
 django-cors-headers==2.2.0
-djangorestframework-jwt
+DjangoREST_REACTframework-jwt
 ```
 Por que en AWS las instancias o son 3.4 o 3.6
 por lo cual no usan tu version de python
@@ -26,7 +26,7 @@ python manage.py  migrate
 python manage.py runserver
 
 ```
-![iniciando server](https://raw.githubusercontent.com/okadath/DjangoREST/master/pics/django.png)
+![iniciando server](https://raw.githubusercontent.com/okadath/DjangoREST_REACT/master/pics/django.png)
 <!-- 
 ## Cap 2 Django tradicional
 agregar a books.models
@@ -125,7 +125,7 @@ hay 3 archivos
 
 + URLS:
  En todo_project/urls.py agregar en el array(nunca pinches putas perras olvidar que se debe agregar el include en versiones superiores al 2.0 para el manejo de urls,cuando hay errores a veces no hay autorefresh en django, hay que cerrar el server con Ctrl+C en consola, el cambio de sintaxis entre versiones me causo dolores de cabeza por dias la primera vez que toque django!!!!!!! >:v ):
-![error en URL](https://raw.githubusercontent.com/okadath/DjangoREST/master/pics/error.png)
+![error en URL](https://raw.githubusercontent.com/okadath/DjangoREST_REACT/master/pics/error.png)
 
  ya corregido:
 ```python
@@ -192,11 +192,11 @@ class DetailTodo(generics.RetriveAPIView):
 
 Accediendo a la URL
 + Para ver todos los items:
-![lista](https://raw.githubusercontent.com/okadath/DjangoREST/master/pics/APIlist.png)
+![lista](https://raw.githubusercontent.com/okadath/DjangoREST_REACT/master/pics/APIlist.png)
 + Para verlos en formato JSON:
-![json](https://raw.githubusercontent.com/okadath/DjangoREST/master/pics/APIJSON.png)
+![json](https://raw.githubusercontent.com/okadath/DjangoREST_REACT/master/pics/APIJSON.png)
 + Para ver un solo item:
-![item](https://raw.githubusercontent.com/okadath/DjangoREST/master/pics/APIitem.png)
+![item](https://raw.githubusercontent.com/okadath/DjangoREST_REACT/master/pics/APIitem.png)
 ## Cap 4 REACT
 
 yo uso yarn, npm igual sirve
@@ -206,7 +206,7 @@ create-react-app frontend
 cd frontend
 npm start
 ```
-![react](https://raw.githubusercontent.com/okadath/DjangoREST/master/pics/createreact.png)
+![react](https://raw.githubusercontent.com/okadath/DjangoREST_REACT/master/pics/createreact.png)
 
 y editamos el src/App.js:
 ```javascript
@@ -242,7 +242,7 @@ class App extends Component{
 }
 export default App;
 ```
-![react estatico](https://raw.githubusercontent.com/okadath/DjangoREST/master/pics/static.png)
+![react estatico](https://raw.githubusercontent.com/okadath/DjangoREST_REACT/master/pics/static.png)
 
 ya con el estatico siguiendo el workflow de React creamos los datos dinamicos
 instalamos axios para manejar la conexion:
@@ -286,7 +286,7 @@ class App extends Component{
 export default App;
 
 ```
-![react dinamico](https://raw.githubusercontent.com/okadath/DjangoREST/master/pics/dinamic.png)
+![react dinamico](https://raw.githubusercontent.com/okadath/DjangoREST_REACT/master/pics/dinamic.png)
 
 y corriendo el server de django como el server de react obtenemos:
 ```bash
@@ -457,7 +457,7 @@ el pinche libro usa el manejo de tokens por default de DRF, nosotros usaremos JW
 
 instalar y agregar al settings:
 ```
- pipenv install djangorestframework-jwt django-rest-auth
+ pipenv install DjangoREST_REACTframework-jwt django-rest-auth
 ```
 
 agregamos en el `setings.py` los permisos, tendremos todo solo para autenticados excepto el sign up
@@ -760,7 +760,7 @@ entonces eso se deja indicado en la documentacion de las funciones con entrecomi
 ### Bug:
 swagger esta muy bugueado, al parecer no lo actualizaron asi que ademas de necesitar una ruta con 
 el nombre de `rest_framework`, para sus plantillas necesita una aplicacion llamada `staticsfile`, en el django actual se usa `static`, entonces se debe de quitar se su plantilla .html ubicada en :
-`/.local/share/virtualenvs/DjangoREST-FTSYNYzu/lib/python3.6/site-packages/rest_framework_swagger/templates/rest_framework_swagger` (Django indica donde esta ubicada) y quitar ese load de la cabecera
+`/.local/share/virtualenvs/DjangoREST_REACT-FTSYNYzu/lib/python3.6/site-packages/rest_framework_swagger/templates/rest_framework_swagger` (Django indica donde esta ubicada) y quitar ese load de la cabecera
 
 
 
