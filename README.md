@@ -201,11 +201,39 @@ Accediendo a la URL
 
 yo uso yarn, npm igual sirve
 ```bash
+yarn add create-react-app
+yarn create-react-app frontend
+cd frontend/
+yarn run
+```
+Si hay problemas con la instalacion :
+```bash
+Starting the development server...
+
+events.js:174
+      throw er; // Unhandled 'error' event
+      ^
+
+Error: ENOSPC: System limit for number of file watchers reached, watch '/home/oka/Desktop/python/Team-Edition-OnDemand-API/frontend_testing/frontend/public'
+    at FSWatcher.start (internal/fs/watchers.js:165:26)
+    ...
+    at setFsWatchListener (/home/oka/Desktop/python/Team-Edition-OnDemand-API/frontend_testing/frontend/node_modules/chokidar/lib/nodefs-handler.js:81:15)
+    [... lines matching original stack trace ...]
+    at FSReqWrap.oncomplete (fs.js:154:5)
+error Command failed with exit code 1.
+```
+Es por que el watchdog de los cambios de node esta mal configurado, activarlo:
+```bash
+echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p
+```
+con npm
+```bash
 sudo npm install -g create-react-app
 create-react-app frontend
 cd frontend
 npm start
 ```
+
 ![react](https://raw.githubusercontent.com/okadath/DjangoREST_REACT/master/pics/createreact.png)
 
 y editamos el src/App.js:
